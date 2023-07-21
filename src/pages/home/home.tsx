@@ -9,8 +9,6 @@ type HomeProps = PropsWithChildren<{
 }>;
 
 export const Home = ({ pokemonList }: HomeProps) => {
-  console.log(pokemonList);
-
   return (
     <MainLayout title="Listado de pokemons">
       <Grid.Container gap={2}>
@@ -27,8 +25,6 @@ export const Home = ({ pokemonList }: HomeProps) => {
 export const getStaticProps = async (
   ctx
 ): Promise<{ props: { pokemonList: Pokemon } }> => {
-  console.log("ctx: ", ctx);
-
   const { data } = await axiosInstance.get("/pokemon?limit=151");
 
   return {

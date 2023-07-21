@@ -1,5 +1,5 @@
 import { NextUIProvider } from "@nextui-org/react";
-import "core/styles/globals.css";
+// import "core/styles/globals.css";
 import type { AppProps } from "next/app";
 import { darkTheme } from "core/styles/theme";
 
