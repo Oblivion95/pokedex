@@ -1,41 +1,22 @@
-import MainLayout from "core/core/components/layout/main-layout";
-import axios_instance from "core/core/api";
+import MainLayout from "core/components/layout/main-layout";
+import axiosInstance from "core/api";
 import { PropsWithChildren } from "react";
-import { Card, Grid, Row, Text } from "@nextui-org/react";
-
-type Pokemon = { name: string; url: string; id: number; image: string };
+import { Grid } from "@nextui-org/react";
+import Card from 'core/components/card/'
 
 type HomeProps = PropsWithChildren<{
   pokemonList: Pokemon[];
 }>;
 
-export const Home = ({ children, pokemonList }: HomeProps) => {
+export const Home = ({ pokemonList }: HomeProps) => {
   console.log(pokemonList);
 
   return (
     <MainLayout title="Listado de pokemons">
       <Grid.Container gap={2}>
         {pokemonList.map((pokemon) => (
-          <Grid xs={6} sm={3} md={2} xl={1} key={pokemon.id}>
-            <Card isHoverable isPressable>
-              <Card.Body css={{ p: 1 }}>
-                <Card.Image
-                  src={pokemon.image}
-                  style={{
-                    width: "100%",
-                    height: "140px",
-                    objectFit: "fill",
-                    aspectRatio: "8/9",
-                  }}
-                />
-              </Card.Body>
-              <Card.Footer>
-                <Row justify="space-between">
-                  <Text transform="capitalize">{pokemon.name}</Text>
-                  <Text>#{pokemon.id}</Text>
-                </Row>
-              </Card.Footer>
-            </Card>
+          <Grid xs={6} sm={4} md={3} xl={2} key={pokemon.id}>
+            <Card pokemon={pokemon}/>
           </Grid>
         ))}
       </Grid.Container>
@@ -48,7 +29,7 @@ export const getStaticProps = async (
 ): Promise<{ props: { pokemonList: Pokemon } }> => {
   console.log("ctx: ", ctx);
 
-  const { data } = await axios_instance.get("/pokemon?limit=151");
+  const { data } = await axiosInstance.get("/pokemon?limit=151");
 
   return {
     props: {
