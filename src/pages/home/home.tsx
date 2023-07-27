@@ -12,7 +12,7 @@ export const Home = ({ pokemonList }: HomeProps) => {
   return (
     <MainLayout title="Listado de pokemons">
       <Grid.Container gap={2}>
-        {pokemonList.map((pokemon) => (
+        {pokemonList?.map((pokemon) => (
           <Grid xs={6} sm={4} md={3} xl={2} key={pokemon.id}>
             <Card pokemon={pokemon}/>
           </Grid>
