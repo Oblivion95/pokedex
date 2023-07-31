@@ -8,7 +8,7 @@ import confetti from "canvas-confetti";
 import toggleLocalStorage, {
   existsInLocalStorage,
 } from "core/utils/toggle-local-storage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type PokemonProps = {
   id: number | string;
@@ -17,10 +17,8 @@ type PokemonProps = {
   pokemon: Pokemon;
 };
 
-const Pokemon: NextPage<PokemonProps> = ({ pokemon }) => {
-  const [isInFavorite, setIsInFavorite] = useState(
-    existsInLocalStorage(pokemon.id)
-  );
+const PokemonByName: NextPage<PokemonProps> = ({ pokemon }) => {
+  const [isInFavorite, setIsInFavorite] = useState();
 
   const handleOnClick = () => {
     toggleLocalStorage(pokemon.id);
@@ -35,10 +33,15 @@ const Pokemon: NextPage<PokemonProps> = ({ pokemon }) => {
       spread: 160,
       angle: -160,
       origin: {
-        x:1, y:0
-      }
-    })
+        x: 1,
+        y: 0,
+      },
+    });
   };
+
+  useEffect(() => {
+    setIsInFavorite(existsInLocalStorage(pokemon.id));
+  }, [pokemon.id]);
 
   return (
     <MainLayout title={pokemon.name}>
@@ -115,11 +118,13 @@ const Pokemon: NextPage<PokemonProps> = ({ pokemon }) => {
   );
 };
 
-export default Pokemon;
+export default PokemonByName;
 
 export const getStaticPaths: GetStaticPaths<any> = async () => {
-  const paths = Array.from({ length: 150 }, (_, id) => ({
-    params: { id: `${id + 1}` },
+  const { data } = await axios_instance.get("/pokemon?limit=151");
+
+  const paths = data.results.map(({ name }) => ({
+    params: { name },
   }));
 
   return {
@@ -128,12 +133,12 @@ export const getStaticPaths: GetStaticPaths<any> = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
+export const getStaticProps: GetStaticProps<any, { name: string }> = async ({
   params,
 }) => {
   {
     const { data: pokemon } = await axios_instance<Pokemon>(
-      `/pokemon/${params.id}`
+      `/pokemon/${params.name}`
     );
 
     return {

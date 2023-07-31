@@ -13,7 +13,7 @@ const toggleLocalStorage = (id: number) => {
 };
 
 const existsInLocalStorage = (id: number) => {
-  if (typeof window === "undefined") return false;
+  if (typeof window === 'undefined') return;
 
   const pokemonIdArray = JSON.parse(localStorage.getItem("pokemonIdArray") ?? '[]');
 
@@ -21,7 +21,7 @@ const existsInLocalStorage = (id: number) => {
 };
 
 const pokemonArray = () => {
-  if (typeof window === "undefined") return false;
+  if (typeof window === "undefined") return;
 
   return JSON.parse(localStorage.getItem("pokemonIdArray") ?? '[]');
 }
