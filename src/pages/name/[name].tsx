@@ -18,7 +18,7 @@ type PokemonProps = {
 };
 
 const PokemonByName: NextPage<PokemonProps> = ({ pokemon }) => {
-  const [isInFavorite, setIsInFavorite] = useState();
+  const [isInFavorite, setIsInFavorite] = useState(false);
 
   const handleOnClick = () => {
     toggleLocalStorage(pokemon.id);

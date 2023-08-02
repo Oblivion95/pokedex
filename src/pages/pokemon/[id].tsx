@@ -32,10 +32,9 @@ const Pokemon: NextPage<PokemonProps> = ({ pokemon }) => {
       zIndex: 8000,
       particleCount: 100,
       startVelocity: 30,
-      spread: 160,
-      angle: -160,
+      spread: 60,
       origin: {
-        x:1, y:0
+        x: 0.87, y: 0.2
       }
     })
   };
