@@ -34,9 +34,10 @@ const Pokemon: NextPage<PokemonProps> = ({ pokemon }) => {
       startVelocity: 30,
       spread: 60,
       origin: {
-        x: 0.87, y: 0.2
-      }
-    })
+        x: 0.87,
+        y: 0.2,
+      },
+    });
   };
 
   return (
@@ -121,9 +122,11 @@ export const getStaticPaths: GetStaticPaths<any> = async () => {
     params: { id: `${id + 1}` },
   }));
 
+  console.log('pathss')
   return {
     paths,
-    fallback: false,
+    // fallback: false,
+    fallback: 'blocking'
   };
 };
 
@@ -131,13 +134,29 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
   params,
 }) => {
   {
-    const { data: pokemon } = await axios_instance<Pokemon>(
-      `/pokemon/${params.id}`
-    );
+    var pokemon: Pokemon = null;
+
+  console.log('propss')
+
+    try {
+      var { data: pokemon } = await axios_instance.get<Pokemon>(
+        `/pokemon/${params.id}`
+      );
+
+    } catch (error) {
+      console.log('error');
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    }
 
     return {
       props: {
         pokemon,
+        revalidate: 3600,
       },
     };
   }

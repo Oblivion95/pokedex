@@ -129,7 +129,7 @@ export const getStaticPaths: GetStaticPaths<any> = async () => {
 
   return {
     paths,
-    fallback: false,
+    fallback: 'blocking',
   };
 };
 
@@ -137,9 +137,19 @@ export const getStaticProps: GetStaticProps<any, { name: string }> = async ({
   params,
 }) => {
   {
-    const { data: pokemon } = await axios_instance<Pokemon>(
-      `/pokemon/${params.name}`
-    );
+    var pokemon: Pokemon = null;
+    try {
+      var { data: pokemon } = await axios_instance.get<Pokemon>(
+        `/pokemon/${params.name}`
+      );
+    } catch (error) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    }
 
     return {
       props: {
